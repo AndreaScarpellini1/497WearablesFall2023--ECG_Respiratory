@@ -8,7 +8,12 @@ FloatList finalLineY;
 float xVal;
 float yVal;
 int count =0;
-float time=0; 
+float time=0;
+
+boolean exhale = false; // This variable keeps track of whether the user is exhaling
+float prevPressure = 0;
+float prevTime = 0;
+float respiratoryRate = 0;
 
 PImage myIcon;
 
@@ -151,5 +156,27 @@ void BreathRate_Square() {
   popStyle();
   fill(0);
   textSize(20);
-  text("Real Time Breathing per Minutes",140,540); 
+  text("Real Time Respiratory Rate: " + String.format("%.2f", respiratoryRate), 90,530);
+  text("Real Time Heartrate: ", 410, 530);
+}
+
+void calculateRespiratoryRate(float pressure) {
+   //Check for a rising edge (pressure increase)
+  if ((!exhale) && prevPressure > pressure) {
+    float currentTime = millis();
+    float timeDifference = currentTime - prevTime;
+    
+    // Calculate respiratory rate (in breaths per minute)
+    if (timeDifference > 0) {
+      respiratoryRate = 60000.0 / timeDifference; // 60 seconds / time difference
+      println(respiratoryRate);
+    }
+    
+    prevTime = currentTime;
+    exhale = true;
+  } else if (exhale && (prevPressure < pressure)) {
+    exhale = false; 
+  }
+  
+  prevPressure = pressure;
 }

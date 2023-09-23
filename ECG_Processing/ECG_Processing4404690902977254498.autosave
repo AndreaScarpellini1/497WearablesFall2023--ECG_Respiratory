@@ -1,0 +1,89 @@
+import processing.serial.*;
+import org.gicentre.utils.stat.*;
+import org.gicentre.utils.stat.AbstractChart;
+
+Serial myPort;
+
+float pressure;
+
+void setup() {
+  String portName = Serial.list()[2];
+  myPort = new Serial(this, portName, 115200);
+  myPort.bufferUntil('\n');
+  myPort.write('3');
+  size(700, 700);
+  graph_setup();
+}
+
+void draw() {
+  graph_draw();
+}
+
+//void keyPressed() {
+//  if (key == 'b' || key == 'B') { // Start baseline when "b" is pressed
+//    startBaseline();
+//  }
+//  if (key == 'm' || key == 'M'){ // Start detection mode when "m" is pressed 
+//   startDetectionMode();
+//  }
+  
+//  if (key == 'e' || key =='E'){
+//    G='n';  
+//  } 
+//  if (key == 'a' || key == 'A') {
+//    inputActive = true; // Activate the input dialog
+//    inputText = ""; // Clear the input text
+//  }
+//    if (key == 'i' || key == 'I') {
+//    instruction = true; // Activate the input dialog
+//  }
+//     if (key == '-') {
+//    instruction = false; // Deactivate the input dialog
+//    inserted = false;
+//  }
+//}
+
+
+void serialEvent(Serial myPort) {
+  
+  String tempVal = myPort.readStringUntil('\n');
+  
+  if (tempVal != null) {
+    tempVal = trim(tempVal);
+    String[] list = split(tempVal, ' ');
+    
+    if (list[0].equals("Heartrate:")) {
+      if (float(list[1])  > 1) {
+        heartRate = float(list[1]);
+      } 
+      updateRestingHR(heartRate);
+      updateModeIdentification(heartRate);
+    }
+    
+    if (list[0].equals("Confidence:")) {
+      confidence = float(list[1]);
+    }
+    
+    if (list[0].equals("beatInt:")) {
+       heartbeat_interval = float(list[1]);
+    }
+    
+    if (list[0].equals("Oxygen:")) {
+      oxygen = float(list[1]);
+    }
+    
+    if (list[0].equals("Status:")) {
+      status = float(list[1]);
+    }
+    
+    println(heartRate);
+    println(confidence);
+    println(oxygen);
+    println(status);
+    
+    if (G != 'n'){
+      graph_serialEvent(heartRate, heartbeat_interval, confidence);
+    }
+
+  }
+}

@@ -8,7 +8,7 @@ Serial myPort;
 float pressure;
 
 void setup() {
-  String portName = Serial.list()[0];
+  String portName = Serial.list()[2];
   myPort = new Serial(this, portName, 115200);
   myPort.bufferUntil('\n');
   myPort.write('3');
@@ -34,5 +34,6 @@ void serialEvent(Serial myPort) {
         pressure = float(tempVal);
         println(pressure);
         graph_serialEvent_lungs(pressure);
+        calculateRespiratoryRate(pressure);
    } 
 }
