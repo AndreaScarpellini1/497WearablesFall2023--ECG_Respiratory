@@ -1,3 +1,5 @@
+const int pressureSensorPin = A1;
+
 void setup() {
   // initialize the serial communication:
   Serial.begin(9600);
@@ -15,6 +17,11 @@ void loop() {
     // send the value of analog input 0:
       Serial.println(analogRead(A0));
   }
-  //Wait for a bit to keep serial data from saturating
+
+  int sensorValue = analogRead(pressureSensorPin); // Read the analog voltage from the sensor
+  float pressure = map(sensorValue, 0, 1023, 0, 100); // Map the sensor value to a pressure range (adjust as needed)
+
+  Serial.print(pressure);
+  
   delay(1);
 }
