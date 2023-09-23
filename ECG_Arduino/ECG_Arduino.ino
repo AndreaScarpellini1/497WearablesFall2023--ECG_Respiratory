@@ -2,7 +2,7 @@ const int pressureSensorPin = A1;
 
 void setup() {
   // initialize the serial communication:
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(10, INPUT); // Setup for leads off detection LO +
   pinMode(11, INPUT); // Setup for leads off detection LO -
 
@@ -11,7 +11,7 @@ void setup() {
 void loop() {
   
   if((digitalRead(10) == 1)||(digitalRead(11) == 1)){
-    Serial.println('!');
+    //Serial.println('!');
   }
   else{
     // send the value of analog input 0:
@@ -21,7 +21,7 @@ void loop() {
   int sensorValue = analogRead(pressureSensorPin); // Read the analog voltage from the sensor
   float pressure = map(sensorValue, 0, 1023, 0, 100); // Map the sensor value to a pressure range (adjust as needed)
 
-  Serial.print(pressure);
+  Serial.println(pressure);
   
-  delay(1);
+  delay(100);
 }
