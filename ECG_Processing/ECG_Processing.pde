@@ -14,11 +14,11 @@ void setup() {
   myPort.write('3');
   size(700, 700);
   graph_setup_lungs();
-  
+  graph_setup_ECG();
 }
 
 void draw() {
-  graph_draw_lungs();
+  graph_draw();
   FitnessMode_Button();
   StressMode_Button();
   MeditationMode_Button() ;
