@@ -19,9 +19,9 @@ void loop() {
   }
 
   int sensorValue = analogRead(pressureSensorPin); // Read the analog voltage from the sensor
-  float pressure = map(sensorValue, 0, 1023, 0, 100); // Map the sensor value to a pressure range (adjust as needed)
+  //float pressure = map(sensorValue, 0, 1023, 0, 100); // Map the sensor value to a pressure range (adjust as needed)
 
-  Serial.println(pressure);
+  Serial.println(sensorValue);
   
   delay(100);
 }

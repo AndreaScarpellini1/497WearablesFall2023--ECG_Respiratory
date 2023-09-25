@@ -149,10 +149,10 @@ void graph_draw() {
   pushStyle();
   //grid 
   stroke(200); // Set the color for grid lines (gray)
-  for (int y = 70; y <=265; y += 20) {                   // TODO: Fix the horizontal lines by moving it down
-    int startX =364; // Adjust the starting X-coordinate
-    int endX = startX +300; // Calculate the ending X-coordinate
-    line(startX, y, constrain(endX, startX, width), y); // Limit the length of the line
+  for (int y =300; y <=474; y += 20) {                   // TODO: Fix the horizontal lines by moving it down
+    int startX =364;                                     // Adjust the starting X-coordinate
+    int endX = startX +300;                              // Calculate the ending X-coordinate
+    line(startX, y, constrain(endX, startX, width), y);  // Limit the length of the line
   }
 
   for (int x = 362; x <= 680; x += 20) {
@@ -163,7 +163,7 @@ void graph_draw() {
   popStyle();
   
  // image lungs
- image(myIconHeart, 610, 280);
+ image(myIconHeart, 600, 300);
 
 }
 
@@ -233,7 +233,11 @@ void BreathRate_Square() {
   popStyle();
   fill(0);
   textSize(20);
-  text("Real Time Respiratory Rate: " + String.format("%.2f", respiratoryRate), 90,560);
+  text("Real Time Respiratory Rate: ",90,560);
+  pushStyle();
+  textSize(40);
+  text(respiratoryRate,147,630);
+  popStyle();
   text("Real Time Heartrate: ", 410, 560);
 }
 
