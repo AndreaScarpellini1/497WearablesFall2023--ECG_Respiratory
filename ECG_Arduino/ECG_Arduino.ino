@@ -15,7 +15,7 @@ void loop() {
   }
   else{
     // send the value of analog input 0:
-      Serial.println(analogRead(A0));
+    //  Serial.println(analogRead(A0));
   }
 
   int sensorValue = analogRead(pressureSensorPin); // Read the analog voltage from the sensor

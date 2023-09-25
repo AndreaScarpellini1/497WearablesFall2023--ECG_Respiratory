@@ -8,7 +8,7 @@ Serial myPort;
 float pressure;
 
 void setup() {
-  String portName = Serial.list()[2];
+  String portName = Serial.list()[0];
   myPort = new Serial(this, portName, 115200);
   myPort.bufferUntil('\n');
   myPort.write('3');
