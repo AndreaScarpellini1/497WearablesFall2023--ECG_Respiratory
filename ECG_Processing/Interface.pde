@@ -96,14 +96,14 @@ void graph_draw() {
   breathingLineChart.setAxisColour(0);
   fill(0); // Set text color to black
   textSize(15);
-  text("Time", 500, 275); // Adjust position as needed
+  text("Time (seconds)", 465, 275); // Adjust position as needed
 
   pushMatrix();
   translate(100,100);
   rotate(-PI/2); // Rotate by 90 degrees counterclockwise
   textSize(15);   // Set the text size
   fill(0);       // Set text color to black
-  text("Breathing Cycle", -100,250); 
+  text("Pressure", -100,240); 
   popMatrix();
   
   
@@ -140,7 +140,7 @@ void graph_draw() {
   heartrateLineChart.setAxisColour(0);
   fill(0); // Set text color to black
   textSize(15);
-  text("Time", 500, 275); // Adjust position as needed
+  text("Time (seconds)", 465, 500); // Adjust position as needed
   popStyle();
 
   pushMatrix();
@@ -148,7 +148,7 @@ void graph_draw() {
   rotate(-PI/2); // Rotate by 90 degrees counterclockwise
   textSize(15);   // Set the text size
   fill(0);       // Set text color to black
-  text("Breathing Cycle", -100,250); 
+  text("Voltage (mv)", -325,240); 
   popMatrix();
   
   
