@@ -24,6 +24,18 @@ void draw() {
   MeditationMode_Button() ;
   SleepMode_Button();
   BreathRate_Square();
+  if (FitnessMode==true){
+    FitnessMode_Draw();
+  }
+  if (StressMode==true){
+    StressMode_Draw();
+  }
+  if (MeditationMode==true){
+    MeditationMode_Draw();
+  }
+  if (SleepingMode==true){
+    SleepingMode_Draw();
+  }
 }
 
 void serialEvent(Serial myPort) {

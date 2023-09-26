@@ -11,17 +11,17 @@ void setup() {
 void loop() {
   
   if((digitalRead(10) == 1)||(digitalRead(11) == 1)){
-    //Serial.println('!');
+    Serial.println('!');
   }
   else{
     // send the value of analog input 0:
-    //  Serial.println(analogRead(A0));
+    Serial.println(analogRead(A0));
   }
 
-  int sensorValue = analogRead(pressureSensorPin); // Read the analog voltage from the sensor
-  //float pressure = map(sensorValue, 0, 1023, 0, 100); // Map the sensor value to a pressure range (adjust as needed)
+  // int sensorValue = analogRead(pressureSensorPin); // Read the analog voltage from the sensor
+  // float pressure = map(sensorValue, 0, 1023, 0, 100); // Map the sensor value to a pressure range (adjust as needed)
 
-  Serial.println(sensorValue);
+  // Serial.println(pressure);
   
   delay(100);
 }

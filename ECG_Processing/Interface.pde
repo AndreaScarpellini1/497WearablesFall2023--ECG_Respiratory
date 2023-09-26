@@ -21,6 +21,12 @@ float respiratoryRate = 0;
 
 PImage myIconLungs;
 PImage myIconHeart;
+PImage myIconHome;
+
+boolean FitnessMode = false;
+boolean MeditationMode = false;
+boolean StressMode = false;
+boolean SleepingMode = false;
 
 void graph_setup_lungs() {
   
@@ -149,7 +155,7 @@ void graph_draw() {
   pushStyle();
   //grid 
   stroke(200); // Set the color for grid lines (gray)
-  for (int y =300; y <=474; y += 20) {                   // TODO: Fix the horizontal lines by moving it down
+  for (int y =300; y <=474; y += 20) {                  
     int startX =364;                                     // Adjust the starting X-coordinate
     int endX = startX +300;                              // Calculate the ending X-coordinate
     line(startX, y, constrain(endX, startX, width), y);  // Limit the length of the line
@@ -261,4 +267,48 @@ void calculateRespiratoryRate(float pressure) {
   }
   
   prevPressure = pressure;
+}
+
+// Pressing the mouse 
+boolean isButtonPressed(float x, float y, float w, float h) {
+  return mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h && mousePressed;
+}
+
+void mousePressed() {
+ if (isButtonPressed(50, 70, 230, 75)) {
+     FitnessMode = true;
+     MeditationMode = false; 
+     StressMode = false;
+     SleepingMode = false;
+  }
+  
+  if (isButtonPressed(50, 170, 230, 75)) {
+     MeditationMode = false;
+     FitnessMode= false;
+     SleepingMode = false; 
+     StressMode = true;
+  }
+  
+  if (isButtonPressed(50, 270, 230, 75)) {
+     StressMode = false;
+     FitnessMode = false;
+     SleepingMode = false;
+     MeditationMode = true;
+  }
+  
+  if (isButtonPressed(50, 370, 230, 75)) {
+     SleepingMode = true;
+     StressMode = false;
+     FitnessMode = false;
+     MeditationMode = false ;
+  }
+     
+  if (SleepingMode == true ||  StressMode == true || FitnessMode== true || MeditationMode == true){
+    if (isButtonPressed(5, 5, 60, 60)) {
+       MeditationMode = false ;
+       FitnessMode= false;
+       SleepingMode = false ; 
+       StressMode = false;
+    }
+   }       
 }
