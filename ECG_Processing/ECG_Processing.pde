@@ -2,10 +2,13 @@ import processing.serial.*;
 import org.gicentre.utils.stat.*;
 import org.gicentre.utils.stat.AbstractChart;
 
+
 Serial myPort;
 
 
+
 float pressure;
+float ECG;
 
 void setup() {
   String portName = Serial.list()[0];
@@ -39,13 +42,29 @@ void draw() {
 }
 
 void serialEvent(Serial myPort) {
-  
   String tempVal = myPort.readStringUntil('\n');
   
   if (tempVal != null) {
-        pressure = float(tempVal);
-        println(pressure);
-        graph_serialEvent_lungs(pressure);
-        calculateRespiratoryRate(pressure);
-   } 
+    tempVal = trim(tempVal);
+    String[] list = split(tempVal, '\t');
+    
+    if (list.length == 2) {
+      // Parse the values as floats
+      float value1 = float(list[0]);
+      float value2 = float(list[1]);
+      
+      //println("Value 1: " + value1);
+      ECG = value1;
+      //println("Value 2: " + value2);
+      pressure = value2;
+      
+      graph_serialEvent_lungs(pressure);
+      graph_serialEvent_heart(ECG);
+      calculateRespiratoryRate(pressure);
+      calculateHeartRate(ECG);
+      // Handle the values as needed
+    } else {
+      println("Invalid data format: " + tempVal);
+    }
+  }
 }
