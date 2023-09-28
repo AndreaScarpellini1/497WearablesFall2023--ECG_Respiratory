@@ -319,28 +319,28 @@ boolean isButtonPressed(float x, float y, float w, float h) {
 }
 
 void mousePressed() {
- if (isButtonPressed(50, 70, 230, 75)) {
+ if (isButtonPressed(50, 70, 230, 75) && FitnessMode == false && MeditationMode==false && StressMode== false && SleepingMode == false ) {
      FitnessMode = true;
      MeditationMode = false; 
      StressMode = false;
      SleepingMode = false;
   }
   
-  if (isButtonPressed(50, 170, 230, 75)) {
+  if (isButtonPressed(50, 170, 230, 75)&& FitnessMode == false && MeditationMode==false && StressMode== false && SleepingMode == false ) {
      MeditationMode = false;
      FitnessMode= false;
      SleepingMode = false; 
      StressMode = true;
   }
   
-  if (isButtonPressed(50, 270, 230, 75)) {
+  if (isButtonPressed(50, 270, 230, 75)&& FitnessMode == false && MeditationMode==false && StressMode== false && SleepingMode == false ) {
      StressMode = false;
      FitnessMode = false;
      SleepingMode = false;
      MeditationMode = true;
   }
   
-  if (isButtonPressed(50, 370, 230, 75)) {
+  if (isButtonPressed(50, 370, 230, 75)&& FitnessMode == false && MeditationMode==false && StressMode== false && SleepingMode == false ) {
      SleepingMode = true;
      StressMode = false;
      FitnessMode = false;
@@ -354,5 +354,8 @@ void mousePressed() {
        SleepingMode = false ; 
        StressMode = false;
     }
-   }       
+   }
+   if (isButtonPressed(50, 170, 230, 75)&& FitnessMode == true){
+     startBaseline();
+   } 
 }
