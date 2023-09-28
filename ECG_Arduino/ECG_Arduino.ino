@@ -15,13 +15,15 @@ void loop() {
   }
   else{
     // send the value of analog input 0:
-    Serial.println(analogRead(A0));
+    Serial.print(analogRead(A0));
   }
 
-  // int sensorValue = analogRead(pressureSensorPin); // Read the analog voltage from the sensor
-  // float pressure = map(sensorValue, 0, 1023, 0, 100); // Map the sensor value to a pressure range (adjust as needed)
-
-  // Serial.println(pressure);
-  
-  delay(100);
+  int sensorValue = analogRead(pressureSensorPin); // Read the analog voltage from the sensor
+  float pressure = map(sensorValue, 0, 1023, 0, 100); // Map the sensor value to a pressure range (adjust as needed)
+ 
+  Serial.print("\t");
+  Serial.print(pressure);
+  Serial.print("\n");
+  delay(10);
+//  delay(100);
 }

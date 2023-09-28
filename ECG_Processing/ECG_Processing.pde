@@ -11,7 +11,7 @@ float pressure;
 float ECG;
 
 void setup() {
-  String portName = Serial.list()[0];
+  String portName = Serial.list()[2];
   myPort = new Serial(this, portName, 115200);
   myPort.bufferUntil('\n');
   myPort.write('3');
