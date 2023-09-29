@@ -10,6 +10,7 @@ Serial myPort;
 float pressure;
 float ECG;
 
+
 void setup() {
   String portName = Serial.list()[2];
   myPort = new Serial(this, portName, 115200);
@@ -53,18 +54,50 @@ void serialEvent(Serial myPort) {
       float value1 = float(list[0]);
       float value2 = float(list[1]);
       
-      //println("Value 1: " + value1);
-      ECG = value1;
-      //println("Value 2: " + value2);
+      if (value1<400){
+          value1= 400;
+      }
+      println(value1);
+      updateBuffer(value1);
+      graph_serialEvent_heart(ECG);
+      
+      updateECGData(); 
+      calculateBPM();
+      
+      println(value2);
       pressure = value2;
       
       graph_serialEvent_lungs(pressure);
-      graph_serialEvent_heart(ECG);
       calculateRespiratoryRate(pressure);
-      calculateHeartRate(ECG);
+   
       // Handle the values as needed
     } else {
       println("Invalid data format: " + tempVal);
     }
   }
+}
+
+
+int bufferSize = 50;
+float[] circularBuffer = new float[bufferSize];
+float sum = 0;
+int bufferIndex = 0;
+
+
+// fuction to smooth the data 
+void updateBuffer(float newValue) {
+  // Remove the oldest value from the sum
+  sum -= circularBuffer[bufferIndex];
+  
+  // Add the new value to the sum
+  sum += newValue;
+  
+  // Update the circular buffer with the new value
+  circularBuffer[bufferIndex] = newValue;
+  
+  // Update ECG with the current moving average
+  ECG = sum / bufferSize;
+  
+  // Increment the buffer index (circular)
+  bufferIndex = (bufferIndex + 1) % bufferSize;
 }

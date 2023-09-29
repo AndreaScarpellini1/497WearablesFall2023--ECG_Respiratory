@@ -2,6 +2,8 @@ boolean isBaselineActive = false;    // to know if baseline is active or not
 int startTime;                       // for storing the starting time of baseline
 float restingHeartRate = 0;          // the calculated resting heart rate
 
+int age; 
+
 void FitnessMode_Draw() {
   fill(255);
   rect(30, 65, 280, 425);
@@ -18,7 +20,7 @@ void FitnessMode_Draw() {
   rect(50, 170, 230, 75);
   fill(0);
   if (isBaselineActive) {
-    int remainingTime = 30 - ((millis() - startTime) / 1000);
+    int remainingTime = 10 - ((millis() - startTime) / 1000);
     if (remainingTime <= 0) {
       endBaseline();
     } else {
@@ -83,6 +85,46 @@ void startBaseline() {
 
 void endBaseline() {
   isBaselineActive = false;           // Set baseline inactive
-  calculateHeartRate(ECG);
+  calculateBPM();
   restingHeartRate= BPM;
+}
+
+
+
+boolean high = false ;
+boolean low = false ;
+boolean moderate = false; 
+boolean resting = false ; 
+
+// once you have to decide the modes based on the baseline 
+void mode_identification(){
+  
+  int maxHeartRate = 220 - age;
+  float HRR = maxHeartRate - restingHeartRate;
+  float HRP = ((BPM/100)*HRR)+restingHeartRate;
+  
+  if ((0.50*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.60*(HRR)+ restingHeartRate)) {
+      resting = true;
+      high = false ;
+      low = false ;
+      moderate = false; 
+  }
+  else if  ((0.60*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.70*(HRR)+ restingHeartRate)){
+      resting = false;
+      high = false ;
+      low = true;
+      moderate = false; 
+  }
+  else if  ((0.70*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.80*(HRR)+ restingHeartRate)){
+      resting = false;
+      high = false ;
+      low = false;
+      moderate = true; 
+  }
+  else if ((0.80*(HRR)+ restingHeartRate) <= HRP) {
+      resting = false;
+      high = true;
+      low = false;
+      moderate = false; 
+  }
 }

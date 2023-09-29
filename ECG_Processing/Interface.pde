@@ -32,13 +32,6 @@ float prevTime = 0;
 float respiratoryRate = 0;
 
 
-// heart rate
-ArrayList<Float> ecgData = new ArrayList<Float>();
-int lastPeakIndex = -1;
-float peakThreshold = 620; // Adjust this threshold as needed
-float BPM = 0;
-float lastTime = 0;
-
 
 //############################################################################################
 void graph_setup_lungs() {
@@ -59,7 +52,21 @@ void graph_setup_lungs() {
   breathingLineChart.setYFormat("00");
   breathingLineChart.setXFormat("00.00");
   
-  breathingLineChart.setPointColour(color(0, 255, 0));
+  if (!resting && !high && !low && !moderate){
+      breathingLineChart.setPointColour(color(0, 0, 0)); //black
+  }
+  if (resting && !high && !low && !moderate){
+      breathingLineChart.setPointColour(color(128, 128, 128)); // gray
+  }
+   if (!resting && !high && low && !moderate){
+      breathingLineChart.setPointColour(color(0, 0, 255)); // blue 
+  }
+   if (!resting && !high && !low && moderate){
+      breathingLineChart.setPointColour(color(255, 165, 0)); // orange  
+  }
+   if (!resting && high && !low && !moderate){
+      breathingLineChart.setPointColour(color(255, 0, 0)); // red 
+  }
   breathingLineChart.setPointSize(5);
   breathingLineChart.setLineWidth(2);
   
@@ -83,7 +90,22 @@ void graph_setup_ECG() {
   heartrateLineChart.setYFormat("00");
   heartrateLineChart.setXFormat("00.00");
   
-  heartrateLineChart.setPointColour(color(0, 255, 0));
+  if (!resting && !high && !low && !moderate){
+      heartrateLineChart.setPointColour(color(0, 0, 0)); //black
+  }
+  if (resting && !high && !low && !moderate){
+      heartrateLineChart.setPointColour(color(128, 128, 128)); // gray
+  }
+   if (!resting && !high && low && !moderate){
+      heartrateLineChart.setPointColour(color(0, 0, 255)); // blue 
+  }
+   if (!resting && !high && !low && moderate){
+      heartrateLineChart.setPointColour(color(255, 165, 0)); // orange  
+  }
+     if (!resting && high && !low && !moderate){
+      heartrateLineChart.setPointColour(color(255, 0, 0)); // red 
+  }
+  
   heartrateLineChart.setPointSize(5);
   heartrateLineChart.setLineWidth(2);
   
@@ -182,7 +204,7 @@ void graph_serialEvent_lungs(float pressure) {
   breathingLineChartY.append(pressure); 
   xVal = count;
   yVal = pressure;
-  if (breathingLineChartX.size() > 8 && breathingLineChartY.size() > 8) {
+  if (breathingLineChartX.size() > 400 && breathingLineChartY.size() > 400) {
     breathingLineChartX.remove(0);
     breathingLineChartY.remove(0);
   }
@@ -196,7 +218,7 @@ void graph_serialEvent_heart(float  ECG) {
   heartrateLineChartY.append(ECG);
   xVal = count_heartrate;
   yVal = ECG;
-  if (heartrateLineChartX.size() > 8 && heartrateLineChartY.size() > 8) {
+  if (heartrateLineChartX.size() > 400 && heartrateLineChartY.size() > 400) {
     heartrateLineChartX.remove(0);
     heartrateLineChartY.remove(0);
   }
@@ -282,36 +304,32 @@ void calculateRespiratoryRate(float pressure) {
   prevPressure = pressure;
 }
 
-// Function to calculate the heart rate of the user
-void calculateHeartRate(float ecgValue) {
-  ecgData.add(ecgValue);
-  float currentTime = millis() / 1000.0; // Convert milliseconds to seconds
-  float deltaTime = currentTime - lastTime;
+float[] ecgData = new float[100]; // Assuming you have an array with ECG data (100 Hz)
+float lastPeakTime = 0;
+float BPM = 0;
 
-  if (ecgData.size() >= 2) {
-    // Check for peaks
-    for (int i = 1; i < ecgData.size() - 1; i++) {
-      float prev = ecgData.get(i - 1);
-      float current = ecgData.get(i);
-      float next = ecgData.get(i + 1);
-      if (current > prev && current > next && current > peakThreshold && current < 700 ) {
-        if (i - lastPeakIndex > 1) {
-          float timeSinceLastPeak = currentTime - lastTime;
-          if (timeSinceLastPeak > 0) {
-            BPM = 60.0 / timeSinceLastPeak; // Heart rate in beats per minute
-            lastTime = currentTime;
-            lastPeakIndex = i;
-            break; // Only count the first peak in this cycle
-          }
-        }
-      }
+
+//======================================================================================================= ECG 
+void updateECGData() {
+  for (int i = 0; i < ecgData.length - 1; i++) {
+    ecgData[i] = ecgData[i + 1];
+  }
+  ecgData[ecgData.length - 1] = ECG;
+}
+
+void calculateBPM() {
+  float currentTime = millis() / 1000.0; // Convert milliseconds to seconds
+  float deltaTime = currentTime - lastPeakTime;
+
+  if (deltaTime >= 0.6) { // Look for peaks every 0.6 seconds (adjust as needed)
+    float maxECGValue = max(ecgData); // Find the maximum ECG value in the current window
+    if (maxECGValue > 500 && maxECGValue < 1000) { // Threshold for peak detection
+      BPM = 60.0 / deltaTime; // Calculate BPM
+      lastPeakTime = currentTime; // Update the last peak time
     }
   }
-  // Remove old data to limit memory usage (e.g., keep the last 10 seconds of data)
-  while (ecgData.size() > 0 && (currentTime - (lastTime - (ecgData.size() - 1) * deltaTime)) > 30) {
-    ecgData.remove(0);
-  }
 }
+
 
 // Pressing the mouse 
 boolean isButtonPressed(float x, float y, float w, float h) {
