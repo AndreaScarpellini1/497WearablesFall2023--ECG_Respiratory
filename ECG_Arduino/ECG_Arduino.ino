@@ -25,9 +25,4 @@ void loop() {
   Serial.print(pressure);
   Serial.print("\n");
   delay(10);
-//  delay(100);
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
