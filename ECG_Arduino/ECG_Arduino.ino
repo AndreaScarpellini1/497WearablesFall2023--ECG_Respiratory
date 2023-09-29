@@ -7,7 +7,7 @@ void setup() {
   pinMode(11, INPUT); // Setup for leads off detection LO -
 
 }
-
+ 
 void loop() {
   
   if((digitalRead(10) == 1)||(digitalRead(11) == 1)){
@@ -26,4 +26,8 @@ void loop() {
   Serial.print("\n");
   delay(10);
 //  delay(100);
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
