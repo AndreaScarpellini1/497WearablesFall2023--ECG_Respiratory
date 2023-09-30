@@ -45,6 +45,8 @@ void draw() {
 void serialEvent(Serial myPort) {
   String tempVal = myPort.readStringUntil('\n');
   
+  //print(tempVal);
+  
   if (tempVal != null) {
     tempVal = trim(tempVal);
     String[] list = split(tempVal, '\t');
@@ -69,7 +71,7 @@ void serialEvent(Serial myPort) {
       
       graph_serialEvent_lungs(pressure);
       calculateRespiratoryRate(pressure);
-   
+      calculateMeditation(pressure); 
       // Handle the values as needed
     } else {
       println("Invalid data format: " + tempVal);

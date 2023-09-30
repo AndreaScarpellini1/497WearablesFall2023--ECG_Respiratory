@@ -3,7 +3,6 @@ void StressMode_Draw(){
   rect(0, 0, 700, 700);
   fill(0);
   textSize(15);
-  text("Fitness Mode",355, 545);
   
   rect(500, 200, 0, 0);
   fill(0);

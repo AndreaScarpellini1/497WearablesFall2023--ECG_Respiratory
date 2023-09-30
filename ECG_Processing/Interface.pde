@@ -24,14 +24,25 @@ boolean MeditationMode = false;
 boolean StressMode = false;
 boolean SleepingMode = false;
 
-
 // respiratory rate 
 boolean exhale = false; // This variable keeps track of whether the user is exhaling
 float prevPressure = 0;
 float prevTime = 0;
 float respiratoryRate = 0;
 
+// heart rate
+int lastPeakIndex = -1;
+float peakThreshold = 620; // Adjust this threshold as needed
+float lastTime = 0;
 
+// meditation
+int countInvalidBreath = 0;
+float inhalationPeriod = 0;
+float exhalationPeriod = 0;
+boolean meditationModeAlert = false;
+boolean medExhale = false;
+float medPrevPressure = 0;
+float medPrevTime;
 
 //############################################################################################
 void graph_setup_lungs() {
@@ -118,7 +129,7 @@ void graph_draw() {
   
   noStroke();
   fill(200);
-  breathingLineChart.draw(350, 60, 325,205);
+  breathingLineChart.draw(350, 60, 325,205);  
   breathingLineChart.setAxisColour(0);
   fill(0); // Set text color to black
   textSize(15);
@@ -299,15 +310,50 @@ void calculateRespiratoryRate(float pressure) {
     exhale = true;
   } else if (exhale && (prevPressure < pressure)) {
     exhale = false; 
+     
   }
   
   prevPressure = pressure;
 }
 
+
 float[] ecgData = new float[100]; // Assuming you have an array with ECG data (100 Hz)
 float lastPeakTime = 0;
 float BPM = 0;
 
+// Function to calculate the respiratory rate of the user
+void calculateMeditation(float pressure) {
+   //Check for a rising edge (pressure increase)
+  if ((!medExhale) && medPrevPressure > pressure) {
+    float currentTime = millis();
+    inhalationPeriod = currentTime - medPrevTime;
+    print("inhale: " + inhalationPeriod);
+    
+    // Calculate respiratory rate (in breaths per minute)
+    if (!((inhalationPeriod > exhalationPeriod * (1/10)) && (inhalationPeriod < exhalationPeriod * (4/5)))) {
+       countInvalidBreath++;
+    } else {
+      countInvalidBreath = 0;
+    }
+    
+    if(countInvalidBreath >= 3) {
+       meditationModeAlert = true;
+    }
+    
+    medPrevTime = currentTime;
+    medExhale = true;
+  } else if (medExhale && (medPrevPressure < pressure)) {
+    float currentTime = millis();
+    exhalationPeriod = currentTime - medPrevTime;
+    print("exhale: " + exhalationPeriod);
+    
+    medPrevTime = currentTime;
+    medExhale = false; 
+  }
+  
+  medPrevPressure = pressure;
+  delay(100);
+}
 
 //======================================================================================================= ECG 
 void updateECGData() {
