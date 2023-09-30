@@ -1,0 +1,32 @@
+
+  // Step 1: Calculate the average of ecgData
+  float average = 0;
+  for (float value : ecgData) {
+    average += value;
+  }
+  average /= ecgData.length;
+
+  // Step 2: Subtract the average from each point in ecgData
+  float[] subtractedData = new float[ecgData.length];
+  for (int i = 0; i < ecgData.length; i++) {
+    subtractedData[i] = ecgData[i] - average;
+  }
+
+  // Step 3: Replace points less than zero with 0
+  float[] filteredData = new float[ecgData.length];
+  for (int i = 0; i < ecgData.length; i++) {
+    filteredData[i] = (subtractedData[i] < 0) ? 0 : subtractedData[i];
+  }
+
+  // Step 4: Apply a moving average of 20 datapoints
+  float[] movingAverage = new float[ecgData.length];
+  for (int i = 0; i < ecgData.length; i++) {
+    float sum = 0;
+    for (int j = max(0, i - 19); j <= i; j++) {
+      sum += filteredData[j];
+    }
+    movingAverage[i] = sum / min(i + 1, 20);
+  }
+
+  return movingAverage;
+
