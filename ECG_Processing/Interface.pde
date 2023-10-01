@@ -150,7 +150,7 @@ void graph_draw() {
   for (int y = 70; y <= 265; y += 20) {
     int startX =364; // Adjust the starting X-coordinate
     int endX = startX +300; // Calculate the ending X-coordinate
-    line(startX, y, constrain(endX, startX, width), y); // Limit the length of the line
+    line(startX, y, constrain(endX, startX, width), y); // Limit the length of the lineF
   }
 
   for (int x = 362; x <= 680; x += 20) {
@@ -304,7 +304,7 @@ void calculateRespiratoryRate(float pressure) {
     if (timeDifference > 0) {
       respiratoryRate = 60000.0 / timeDifference; // 60 seconds / time difference
       println(respiratoryRate);
-    }
+    }  
     
     prevTime = currentTime;
     exhale = true;
@@ -363,18 +363,49 @@ void updateECGData() {
   ecgData[ecgData.length - 1] = ECG;
 }
 
+boolean rising = true;
+float lastValue = 0;
+float threshold = 400;
+
 void calculateBPM() {
-  float currentTime = millis() / 1000.0; // Convert milliseconds to seconds
+  float currentTime = millis() / 1000.0; // Convert to seconds
   float deltaTime = currentTime - lastPeakTime;
 
-  if (deltaTime >= 0.6) { // Look for peaks every 0.6 seconds (adjust as needed)
-    float maxECGValue = max(ecgData); // Find the maximum ECG value in the current window
-    if (maxECGValue > 500 && maxECGValue < 1000) { // Threshold for peak detection
-      BPM = 60.0 / deltaTime; // Calculate BPM
-      lastPeakTime = currentTime; // Update the last peak time
+  // Take the latest value from the ecgData array
+  float currentECGValue = ecgData[ecgData.length - 1];
+
+   //Loosen the time window for testing
+  if (deltaTime >= 0.6) { 
+    if (currentECGValue > lastValue) {
+      if (!rising && currentECGValue > threshold) {
+        // Debounce: Ignore additional peaks within 0.1 seconds (less harsh)
+        if (currentTime - lastPeakTime > 0.1) {
+          BPM = 60.0 / deltaTime;
+          lastPeakTime = currentTime;
+        }
+      }
+      rising = true;
+    } else {
+      rising = false;
     }
   }
+  lastValue = currentECGValue;
 }
+
+
+//void calculateBPM() {
+//  float currentTime = millis() / 1000.0; // Convert milliseconds to seconds
+//  float deltaTime = currentTime - lastPeakTime;
+
+//  if (deltaTime >= 0.6) { // Look for peaks every 0.6 seconds (adjust as needed)
+//    float maxECGValue = max(ecgData); // Find the maximum ECG value in the current window
+//    if (maxECGValue > 500 && maxECGValue < 1000) { // Threshold for peak detection
+//      BPM = 60.0 / deltaTime; // Calculate BPM
+//      lastPeakTime = currentTime; // Update the last peak time
+//    }
+//  }
+//}
+
 
 
 // Pressing the mouse 
