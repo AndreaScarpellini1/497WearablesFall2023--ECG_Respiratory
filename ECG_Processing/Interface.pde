@@ -421,5 +421,14 @@ void mousePressed() {
    }
    if (isButtonPressed(50, 170, 230, 75)&& FitnessMode == true){
      startBaseline();
+   }
+   
+   if (isButtonPressed(75, 600, 230, 75)&& MeditationMode == true){
+     medStartHRBaseline();
    } 
+   
+   if (isButtonPressed(375, 600, 245, 75)&& MeditationMode == true){
+     medStartBreathBaseline();
+   } 
+   
 }

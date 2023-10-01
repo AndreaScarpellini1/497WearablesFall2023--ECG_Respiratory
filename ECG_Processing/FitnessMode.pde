@@ -41,7 +41,7 @@ void FitnessMode_Draw() {
   pushMatrix();
   fill(0);
   textSize(15);
-  text("High Activation",50+5, 275+25);
+  text("Hard (80 - 100%)",50+5, 275+25);
   popMatrix();
   
   pushMatrix();
@@ -51,7 +51,7 @@ void FitnessMode_Draw() {
   
   pushMatrix();
   fill(0); // RGB color representation (orange)
-  text ("Moderate Activation",50+5, 325+25);
+  text ("Moderate (70 - 80%)",50+5, 325+25);
   popMatrix();
   
   pushMatrix();
@@ -61,7 +61,7 @@ void FitnessMode_Draw() {
   
   pushMatrix();
   fill(0);
-  text ("Low Activation",50+5, 375+25);
+  text ("Light (60 - 70%)",50+5, 375+25);
   popMatrix();
   
   pushMatrix();
@@ -71,7 +71,7 @@ void FitnessMode_Draw() {
   
   pushMatrix();
   fill(0);
-  text ("Resting State",50+5, 425+25);
+  text ("Very Light (50 - 60%)",50+5, 425+25);
   popMatrix();
 }
 
