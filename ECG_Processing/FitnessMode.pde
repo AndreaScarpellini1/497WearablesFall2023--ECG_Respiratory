@@ -2,7 +2,15 @@ boolean isBaselineActive = false;    // to know if baseline is active or not
 int startTime;                       // for storing the starting time of baseline
 float restingHeartRate = 0;          // the calculated resting heart rate
 
-int age; 
+int age;
+
+//variable for each time
+int timeInResting = 0;
+int timeInLow = 0;
+int timeInModerate = 0;
+int timeInHigh = 0;
+int lastTimeChecked = 0;
+
 
 void FitnessMode_Draw() {
   fill(255);
@@ -32,47 +40,55 @@ void FitnessMode_Draw() {
     text("Rest HR: " + nf(restingHeartRate, 0, 2) + " BPM", 60, 215);
     popMatrix();
   }
-  
+
   pushMatrix();
-  fill(180, 0, 255); // RGB color representation (purple)
+  fill(200, 0, 0); // RGB color representation (red)
   rect(50, 275, 230, 40);
   popMatrix();
-  
+
   pushMatrix();
   fill(0);
   textSize(15);
-  text("Hard (80 - 100%)",50+5, 275+25);
+  text("Hard (80 - 100%)", 50+5, 275+25);
   popMatrix();
-  
+
   pushMatrix();
-  fill(255);fill(255, 0, 0); // RGB color representation (red)
+  fill(255);
+  fill(255, 145, 0); // RGB color representation (orange)
   rect(50, 325, 230, 40);
   popMatrix();
-  
+
   pushMatrix();
-  fill(0); // RGB color representation (orange)
-  text ("Moderate (70 - 80%)",50+5, 325+25);
+  fill(0);
+  text ("Moderate (70 - 80%)", 50+5, 325+25);
   popMatrix();
-  
+
   pushMatrix();
-  fill(255, 255, 0); // RGB color representation (yellow)
+  fill(255,255,51); // RGB color representation (yellow)
   rect(50, 375, 230, 40);
   popMatrix();
-  
+
   pushMatrix();
   fill(0);
-  text ("Light (60 - 70%)",50+5, 375+25);
+  text ("Light (60 - 70%)", 50+5, 375+25);
   popMatrix();
-  
+
   pushMatrix();
-  fill(0, 255, 0); // RGB color representation (green)
+  fill(0, 200, 0); // RGB color representation (green)
   rect(50, 425, 230, 40);
   popMatrix();
-  
+
   pushMatrix();
   fill(0);
-  text ("Very Light (50 - 60%)",50+5, 425+25);
+  text ("Very Light (50 - 60%)", 50+5, 425+25);
   popMatrix();
+
+
+  // Display the time spent in each zone
+  text("" + nf(timeInHigh/1000) + "s", 250, 300);
+  text("" + nf(timeInModerate/1000) + "s", 250, 350);
+  text("" + nf(timeInLow/1000) + "s", 250, 400);
+  text("" + nf(timeInResting/1000) + "s", 250, 450);
 }
 
 void startBaseline() {
@@ -89,42 +105,78 @@ void endBaseline() {
   restingHeartRate= BPM;
 }
 
-
-
 boolean high = false ;
 boolean low = false ;
-boolean moderate = false; 
-boolean resting = false ; 
+boolean moderate = false;
+boolean resting = true ;
 
-// once you have to decide the modes based on the baseline 
-void mode_identification(){
-  
-  int maxHeartRate = 220 - age;
-  float HRR = maxHeartRate - restingHeartRate;
-  float HRP = ((BPM/100)*HRR)+restingHeartRate;
-  
-  if ((0.50*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.60*(HRR)+ restingHeartRate)) {
-      resting = true;
-      high = false ;
-      low = false ;
-      moderate = false; 
+void testTime() {
+  if (timeInResting/1000 > 5) {
+    resting = false;
+    low = true;
   }
-  else if  ((0.60*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.70*(HRR)+ restingHeartRate)){
-      resting = false;
-      high = false ;
-      low = true;
-      moderate = false; 
+  if(timeInLow/1000 > 4) {
+    low = false;
+    moderate = true;
   }
-  else if  ((0.70*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.80*(HRR)+ restingHeartRate)){
-      resting = false;
-      high = false ;
-      low = false;
-      moderate = true; 
+  if (timeInModerate/1000 > 7) {
+    moderate = false;
+    high = true;
   }
-  else if ((0.80*(HRR)+ restingHeartRate) <= HRP) {
-      resting = false;
-      high = true;
-      low = false;
-      moderate = false; 
+  if (timeInHigh/1000 > 10) {
+    high = false;
+    moderate = true;
   }
+}
+
+void updateTimeInZones() {
+  // Calculate the time elapsed since last checked
+  int deltaTime = millis() - lastTimeChecked;
+
+  if (resting) {
+    timeInResting += deltaTime;
+  } else if (low) {
+    timeInLow += deltaTime;
+  } else if (moderate) {
+    timeInModerate += deltaTime;
+  } else if (high) {
+    timeInHigh += deltaTime;
+  }
+
+  // Update the last time checked
+  lastTimeChecked = millis();
+}
+
+// once you have to decide the modes based on the baseline
+void mode_identification() {
+
+//  int maxHeartRate = 220 - age;
+//  float HRR = maxHeartRate - restingHeartRate;
+//  float HRP = ((BPM/100)*HRR)+restingHeartRate;
+
+
+//  if ((0.50*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.60*(HRR)+ restingHeartRate)) {
+//      resting = true;
+//      high = false ;
+//      low = false ;
+//      moderate = false;
+//  }
+//  else if  ((0.60*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.70*(HRR)+ restingHeartRate)){
+//      resting = false;
+//      high = false ;
+//      low = true;
+//      moderate = false;
+//  }
+//  else if  ((0.70*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.80*(HRR)+ restingHeartRate)){
+//      resting = false;
+//      high = false ;
+//      low = false;
+//      moderate = true;
+//  }
+//  else if ((0.80*(HRR)+ restingHeartRate) <= HRP) {
+//      resting = false;
+//      high = true;
+//      low = false;
+//      moderate = false;
+  //}
 }

@@ -101,27 +101,30 @@ void graph_setup_ECG() {
   
   heartrateLineChart.setYFormat("00");
   heartrateLineChart.setXFormat("00.00");
-  
-  if (!resting && !high && !low && !moderate){
-      heartrateLineChart.setPointColour(color(0, 0, 0)); //black
-  }
-  if (resting && !high && !low && !moderate){
-      heartrateLineChart.setPointColour(color(128, 128, 128)); // gray
-  }
-   if (!resting && !high && low && !moderate){
-      heartrateLineChart.setPointColour(color(0, 0, 255)); // blue 
-  }
-   if (!resting && !high && !low && moderate){
-      heartrateLineChart.setPointColour(color(255, 165, 0)); // orange  
-  }
-     if (!resting && high && !low && !moderate){
-      heartrateLineChart.setPointColour(color(255, 0, 0)); // red 
-  }
+
   
   heartrateLineChart.setPointSize(5);
   heartrateLineChart.setLineWidth(2);
   
   count_heartrate = 0;
+}
+
+void graph_ECG_Color_Change() {
+  if (!resting && !high && !low && !moderate){
+      heartrateLineChart.setPointColour(color(0, 0, 0)); //black
+  }
+  if (resting && !high && !low && !moderate){
+      heartrateLineChart.setPointColour(color(0, 200, 0)); // green
+  }
+   if (!resting && !high && low && !moderate){
+      heartrateLineChart.setPointColour(color(255,255,51)); // yellow
+  }
+   if (!resting && !high && !low && moderate){
+      heartrateLineChart.setPointColour(color(255, 145, 0)); // orange  
+  }
+     if (!resting && high && !low && !moderate){
+      heartrateLineChart.setPointColour(color(200, 0, 0)); // red 
+  }
 }
 
 void graph_draw() {
