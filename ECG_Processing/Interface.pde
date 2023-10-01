@@ -29,6 +29,7 @@ boolean exhale = false; // This variable keeps track of whether the user is exha
 float prevPressure = 0;
 float prevTime = 0;
 float respiratoryRate = 0;
+ArrayList<Float> respiratoryRateList = new ArrayList<>();
 
 // heart rate
 int lastPeakIndex = -1;
@@ -303,6 +304,12 @@ void calculateRespiratoryRate(float pressure) {
     // Calculate respiratory rate (in breaths per minute)
     if (timeDifference > 0) {
       respiratoryRate = 60000.0 / timeDifference; // 60 seconds / time difference
+      
+      // If baseline calculation is active then add to respiratory rate array
+      if (isMedBreathBaselineActive) {
+        respiratoryRateList.add(respiratoryRate);
+      }
+      
       println(respiratoryRate);
     }  
     
@@ -310,10 +317,19 @@ void calculateRespiratoryRate(float pressure) {
     exhale = true;
   } else if (exhale && (prevPressure < pressure)) {
     exhale = false; 
-     
   }
   
   prevPressure = pressure;
+}
+
+// Calculate and return resting respiratory rate
+float calculateRestingRespiratoryRate() {
+  int sum = 0;
+  for (int i = 0; i < respiratoryRateList.size(); i++) {
+      sum += respiratoryRateList.get(i);
+  }
+  
+  return (float) sum / respiratoryRateList.size();
 }
 
 

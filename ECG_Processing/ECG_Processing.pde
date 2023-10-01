@@ -2,10 +2,7 @@ import processing.serial.*;
 import org.gicentre.utils.stat.*;
 import org.gicentre.utils.stat.AbstractChart;
 
-
 Serial myPort;
-
-
 
 float pressure;
 float ECG;

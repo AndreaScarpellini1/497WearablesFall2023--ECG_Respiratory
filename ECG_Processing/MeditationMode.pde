@@ -10,11 +10,18 @@ float growthSpeed = 0.5;   // Rate at which the circle expands
 float shrinkSpeed = 0.165; // Rate at which the circle shrinks
 boolean growing = true;  // Flag to track if the circle is expanding or shrinking
 
+PImage backgroundImage;
+
 void MeditationMode_Draw(){
   fill(255);
   rect(0, 0, 700, 700);
   fill(0);
   textSize(15);
+  
+  // Adds background image to meditation mode
+  backgroundImage = loadImage("blue-purple.jpeg"); // Load your background image
+  backgroundImage.resize(width, height); // Resize the background image to match the canvas size
+  background(backgroundImage);
   
   rect(500, 200, 0, 0);
   fill(0);
@@ -25,13 +32,13 @@ void MeditationMode_Draw(){
   if(meditationModeAlert) {
     pushStyle();
     textSize(25);
-    fill(255, 51, 78);
+    fill(255,0,0);
     text("You are not Meditating", 235, 125);
     popStyle();
   } else {
     pushStyle();
     textSize(25);
-    fill(157, 51, 255);
+    fill(255, 255, 51);
     text("You are Meditating", 255, 125);
     popStyle();
   }
@@ -45,8 +52,8 @@ void MeditationMode_Draw(){
   pushStyle();
   noFill(); // Set the fill to transparent (no color)
   stroke(0); // Set the border color to black
-  rect(50, 550, 600, 125); // rectangle around the buttons
-  rect(227, 87, 250, 60); // rectangle around the meditation alert
+  //rect(50, 550, 600, 125); // rectangle around the buttons
+  //rect(227, 87, 250, 60); // rectangle around the meditation alert
   popStyle();
   
   // Call the functions to create the resting heart and breath rate button
@@ -156,12 +163,12 @@ void medStartBreathBaseline() {
     isMedBreathBaselineActive = true;          // Set baseline active
     medBreathStartTime = millis();             // Store the current time as the starting time
     medRestingRespiratoryRate = 0;             // Reset resting heart rate
+    respiratoryRateList.clear();
   }
 }
 
 // Function to end the meditation respiratory baseline calculation
 void medEndBreathBaseline() {
   isMedBreathBaselineActive = false;           // Set baseline inactive
-  calculateBPM();                        // TODO: Fix this to work with meditation
-  medRestingRespiratoryRate= BPM;
+  medRestingRespiratoryRate= calculateRestingRespiratoryRate(); // Calls function to calculate resting respiratory rate
 }
