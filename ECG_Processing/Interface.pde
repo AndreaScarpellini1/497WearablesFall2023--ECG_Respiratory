@@ -327,6 +327,10 @@ void calculateRespiratoryRate(float pressure) {
 
 // Calculate and return resting respiratory rate
 float calculateRestingRespiratoryRate() {
+  if(respiratoryRateList.size() < 1) {
+    respiratoryRateList.add(0.0);
+  }
+  
   int sum = 0;
   for (int i = 0; i < respiratoryRateList.size(); i++) {
       sum += respiratoryRateList.get(i);

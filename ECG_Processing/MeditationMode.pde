@@ -71,6 +71,7 @@ void createHeartRateButton() {
   fill(0);
   // Checks if the heart rate baseline is calculating
   if (isMedHRBaselineActive) {
+    textSize(30);
     int remainingTime = 10 - ((millis() - medHRStartTime) / 1000);
     if (remainingTime <= 0) {
       medEndHRBaseline();
@@ -93,6 +94,7 @@ void createBreathRateButton() {
   fill(0);
   // Checks if the respiratory baseline is calculating
   if (isMedBreathBaselineActive) {
+    textSize(30);
     int remainingTime = 10 - ((millis() - medBreathStartTime) / 1000);
     if (remainingTime <= 0) {
       medEndBreathBaseline();
