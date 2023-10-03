@@ -486,4 +486,12 @@ void mousePressed() {
      medStartBreathBaseline();
    } 
    
+   if (isButtonPressed(buttonX, buttonY, buttonWidth, buttonHeight) && StressMode == true) {
+     calculateStressBaseline();
+   }
+   
+   if (isButtonPressed(button2x, button2y, button2Width, button2Height) && StressMode == true) {
+     calculateMentalMode();
+   }
+   
 }
