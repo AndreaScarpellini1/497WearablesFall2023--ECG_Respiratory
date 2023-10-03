@@ -16,6 +16,7 @@ void setup() {
   size(700, 700);
   graph_setup_lungs();
   graph_setup_ECG();
+  lastTimeChecked = millis();
 }
 
 void draw() {
@@ -36,7 +37,14 @@ void draw() {
   }
   if (SleepingMode==true){
     SleepingMode_Draw();
+    Count_time_Square();
   }
+  
+  graph_ECG_Color_Change();
+  //for fitness
+  updateTimeInZones();
+  
+  testTime(); //testing fitness
 }
 
 void serialEvent(Serial myPort) {
