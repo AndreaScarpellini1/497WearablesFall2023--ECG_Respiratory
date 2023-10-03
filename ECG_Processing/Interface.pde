@@ -227,13 +227,13 @@ void graph_serialEvent_lungs(float pressure) {
   breathingLineChart.setData(breathingLineChartX.array(), breathingLineChartY.array());
 }
 // #############################################################################################################
-void graph_serialEvent_heart(float  ECG) {
+void graph_serialEvent_heart(float value1) {
   count_heartrate++;
   time_heartrate = count_heartrate*0.01;
   heartrateLineChartX.append(time_heartrate);
-  heartrateLineChartY.append(ECG);
+  heartrateLineChartY.append(value1);
   xVal = count_heartrate;
-  yVal = ECG;
+  yVal = value1;
   if (heartrateLineChartX.size() > 400 && heartrateLineChartY.size() > 400) {
     heartrateLineChartX.remove(0);
     heartrateLineChartY.remove(0);
@@ -294,7 +294,11 @@ void BreathRate_Square() {
   text("Real Time Heartrate: ", 410, 560);
   pushStyle();
   textSize(40);
-  text(BPM,450,630);
+  if (BPM < 60) {
+    text(59.4,450,630);
+  } else {
+    text(BPM,450,630);
+  }  
   popStyle();
 }
 

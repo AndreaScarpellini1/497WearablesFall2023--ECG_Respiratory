@@ -6,7 +6,7 @@ Serial myPort;
 
 float pressure;
 float ECG;
-
+float value1;
 
 void setup() {
   String portName = Serial.list()[2];
@@ -58,7 +58,7 @@ void serialEvent(Serial myPort) {
     
     if (list.length == 2) {
       // Parse the values as floats
-      float value1 = float(list[0]);
+      value1 = float(list[0]);
       float value2 = float(list[1]);
       
       if (value1<400){
@@ -66,7 +66,7 @@ void serialEvent(Serial myPort) {
       }
       println(value1);
       updateBuffer(value1);
-      graph_serialEvent_heart(ECG);
+      graph_serialEvent_heart(value1);
       
       updateECGData(); 
       calculateBPM();
@@ -85,7 +85,7 @@ void serialEvent(Serial myPort) {
 }
 
 
-int bufferSize = 50;
+int bufferSize = 25;
 float[] circularBuffer = new float[bufferSize];
 float sum = 0;
 int bufferIndex = 0;
