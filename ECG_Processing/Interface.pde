@@ -271,7 +271,7 @@ void SleepMode_Button() {
   fill(61, 187, 245);
   rect(50, 370, 230, 75);
   fill(0);
-  text("Sleep Mode",60, 415);
+  text("Apnea Mode",60, 415);
 }
 
 

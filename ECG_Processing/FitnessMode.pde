@@ -2,7 +2,7 @@ boolean isBaselineActive = false;    // to know if baseline is active or not
 int startTime;                       // for storing the starting time of baseline
 float restingHeartRate = 0;          // the calculated resting heart rate
 
-int age;
+int age = 21;
 
 //variable for each time
 int timeInResting = 0;
@@ -70,7 +70,7 @@ void FitnessMode_Draw() {
 
   pushMatrix();
   fill(0);
-  text ("Light (60 - 70%)", 50+5, 375+25);
+  text ("Light (60 - %)", 50+5, 375+25);
   popMatrix();
 
   pushMatrix();
@@ -110,24 +110,24 @@ boolean low = false ;
 boolean moderate = false;
 boolean resting = true ;
 
-void testTime() {
-  if (timeInResting/1000 > 5) {
-    resting = false;
-    low = true;
-  }
-  if(timeInLow/1000 > 4) {
-    low = false;
-    moderate = true;
-  }
-  if (timeInModerate/1000 > 7) {
-    moderate = false;
-    high = true;
-  }
-  if (timeInHigh/1000 > 10) {
-    high = false;
-    moderate = true;
-  }
-}
+//void testTime() {
+//  if (timeInResting/1000 > 5) {
+//    resting = false;
+//    low = true;
+//  }
+//  if(timeInLow/1000 > 4) {
+//    low = false;
+//    moderate = true;
+//  }
+//  if (timeInModerate/1000 > 7) {
+//    moderate = false;
+//    high = true;
+//  }
+//  if (timeInHigh/1000 > 10) {
+//    high = false;
+//    moderate = true;
+//  }
+//}
 
 void updateTimeInZones() {
   // Calculate the time elapsed since last checked
@@ -150,33 +150,33 @@ void updateTimeInZones() {
 // once you have to decide the modes based on the baseline
 void mode_identification() {
 
-//  int maxHeartRate = 220 - age;
-//  float HRR = maxHeartRate - restingHeartRate;
-//  float HRP = ((BPM/100)*HRR)+restingHeartRate;
+  int maxHeartRate = 220 - age;
+  float HRR = maxHeartRate - restingHeartRate;
+  float HRP = ((BPM/100)*HRR)+restingHeartRate;
 
 
-//  if ((0.50*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.60*(HRR)+ restingHeartRate)) {
-//      resting = true;
-//      high = false ;
-//      low = false ;
-//      moderate = false;
-//  }
-//  else if  ((0.60*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.70*(HRR)+ restingHeartRate)){
-//      resting = false;
-//      high = false ;
-//      low = true;
-//      moderate = false;
-//  }
-//  else if  ((0.70*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.80*(HRR)+ restingHeartRate)){
-//      resting = false;
-//      high = false ;
-//      low = false;
-//      moderate = true;
-//  }
-//  else if ((0.80*(HRR)+ restingHeartRate) <= HRP) {
-//      resting = false;
-//      high = true;
-//      low = false;
-//      moderate = false;
-  //}
+  if ((0.50*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.60*(HRR)+ restingHeartRate)) {
+      resting = true;
+      high = false ;
+      low = false ;
+      moderate = false;
+  }
+  else if  ((0.60*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.70*(HRR)+ restingHeartRate)){
+      resting = false;
+      high = false ;
+      low = true;
+      moderate = false;
+  }
+  else if  ((0.70*(HRR)+ restingHeartRate) <= HRP && HRP <= (0.80*(HRR)+ restingHeartRate)){
+      resting = false;
+      high = false ;
+      low = false;
+      moderate = true;
+  }
+  else if ((0.80*(HRR)+ restingHeartRate) <= HRP) {
+      resting = false;
+      high = true;
+      low = false;
+      moderate = false;
+  }
 }
