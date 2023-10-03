@@ -51,7 +51,7 @@ boolean apnea = false;
 float TOA;
 float NoA;
 
-void measureApnea(int pressureValue) {
+void measureApnea(float pressureValue) {
   if (pressureValue == 0) {
     // Increment the consecutive zero count
     int consecutiveZeroes = 1;
