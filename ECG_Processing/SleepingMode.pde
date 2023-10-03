@@ -44,7 +44,7 @@ void SleepingMode_Draw(){
 }
 
 
-int[] data = new int[100]; // Initialize an array to store values
+float [] data = new float[100];                        
 int currentIndex = 0;      // Keep track of the current index in the array
 int zeroCount = 0;         // Initialize the zero count
 boolean apnea = false;

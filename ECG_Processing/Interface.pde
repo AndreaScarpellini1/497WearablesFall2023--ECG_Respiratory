@@ -18,6 +18,7 @@ float bpm =0;
 PImage myIconLungs;
 PImage myIconHeart;
 PImage myIconHome;
+PImage myIconApnea;
 
 boolean FitnessMode = false;
 boolean MeditationMode = false;

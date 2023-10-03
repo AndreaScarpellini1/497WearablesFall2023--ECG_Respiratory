@@ -9,7 +9,7 @@ float ECG;
 
 
 void setup() {
-  String portName = Serial.list()[2];
+  String portName = Serial.list()[0];
   myPort = new Serial(this, portName, 115200);
   myPort.bufferUntil('\n');
   myPort.write('3');
@@ -37,7 +37,7 @@ void draw() {
   }
   if (SleepingMode==true){
     SleepingMode_Draw();
-    Count_time_Square()
+    Count_time_Square();
   }
   
   graph_ECG_Color_Change();
