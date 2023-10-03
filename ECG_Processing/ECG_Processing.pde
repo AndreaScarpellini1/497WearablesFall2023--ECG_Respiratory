@@ -37,6 +37,7 @@ void draw() {
   }
   if (SleepingMode==true){
     SleepingMode_Draw();
+    Count_time_Square()
   }
   
   graph_ECG_Color_Change();
@@ -72,7 +73,7 @@ void serialEvent(Serial myPort) {
       
       println(value2);
       pressure = value2;
-      
+      measureApnea(pressure);
       graph_serialEvent_lungs(pressure);
       calculateRespiratoryRate(pressure);
       calculateMeditation(pressure); 
